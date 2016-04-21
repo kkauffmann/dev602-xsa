@@ -1,0 +1,42 @@
+ID: dev602-xsa
+description: DEV602 Group 01 First XS Advanced App
+version: 0.0.1
+
+modules:
+- name: web
+  type: html5
+  path: web
+  requires:
+    - name: dev602_14-uaa
+    - name: nodejs
+      group: destinations
+      properties:
+        name: nodejs
+        url: ~{url}
+        forwardAuthToken: true
+
+- name: db
+  type: hdb
+  path: db
+  requires:
+  - name: hdi-container
+
+- name: js
+  type: nodejs
+  path: js
+  provides: 
+    - name: nodejs
+      properties:
+        url: "${default-url}"
+  requires:
+    - name: dev602_14-uaa
+    - name: db
+    - name: hdi-container
+
+resources:
+  - name: dev602_14-uaa 
+    type: com.sap.xs.uaa
+    parameters:
+      config_path: ./xs-security.json
+  - name: hdi-container
+    type: com.sap.xs.hdi-container
